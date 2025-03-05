@@ -7,7 +7,7 @@ export default async function EditHotelPage({ params }) {
   const { id } = params;
   const session = await getServerSession(authOptions);
 
-  if (!session?.backendToken) {
+  if (!session?.accessToken) {
     // Handle unauthenticated user
     return <p>You need to login to view this page.</p>;
   }
@@ -15,7 +15,7 @@ export default async function EditHotelPage({ params }) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/hotels/${id}`,
     {
-      headers: { Authorization: `Bearer ${session.backendToken}` },
+      headers: { Authorization: `Bearer ${session.accessToken}` },
     }
   );
 
@@ -25,5 +25,5 @@ export default async function EditHotelPage({ params }) {
 
   const hotelData = await res.json();
 
-  return <EditHotel hotelData={hotelData} token={session.backendToken} />;
+  return <EditHotel hotelData={hotelData} token={session.accessToken} />;
 }

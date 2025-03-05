@@ -5,9 +5,9 @@ import CreateHotelForm from "./CreateHotelForm"; // Create the client component
 export default async function CreateHotelPage() {
   const session = await getServerSession(authOptions);
 
-  if (!session?.backendToken) {
+  if (!session?.accessToken) {
     return <p>You need to login to view this page.</p>;
   }
 
-  return <CreateHotelForm backendToken={session.backendToken} />;
+  return <CreateHotelForm accessToken={session.accessToken} />;
 }

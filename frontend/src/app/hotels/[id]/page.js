@@ -19,12 +19,12 @@ async function getHotel(id, token) {
 export default async function HotelDetailsPage({ params }) {
   const session = await getServerSession(authOptions);
 
-  if (!session?.backendToken) {
+  if (!session?.accessToken) {
     return <p className="text-danger">You need to login to view this page.</p>;
   }
 
   try {
-    const hotel = await getHotel(params.id, session.backendToken);
+    const hotel = await getHotel(params.id, session.accessToken);
     return <HotelDetails hotel={hotel} params={params} />;
   } catch (error) {
     return <p className="text-danger">{error.message || "An error occurred."}</p>;

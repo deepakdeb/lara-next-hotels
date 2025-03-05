@@ -9,6 +9,8 @@ async function getHotels(page, token) {
     cache: "no-store",
   });
 
+  console.log(res)
+
   if (!res.ok) {
     throw new Error("Failed to fetch hotels");
   }
@@ -19,12 +21,12 @@ async function getHotels(page, token) {
 export default async function HotelsPage({ searchParams }) {
   const session = await getServerSession(authOptions);
 
-  if (!session?.backendToken) {
+  if (!session?.accessToken) {
     return <p className="text-danger">You need to login to view this page.</p>;
   }
 
   const page = await searchParams?.page || 1;
-  const hotels = await getHotels(page, session.backendToken);
+  const hotels = await getHotels(page, session.accessToken);
 
   return (
     <div>
@@ -49,7 +51,7 @@ export default async function HotelsPage({ searchParams }) {
                     <Link href={`/hotels/edit/${hotel.id}`} className="text-white text-decoration-none">Edit</Link>
                   </button>
                   {/* ✅ Use DeleteHotelButton (Client Component) */}
-                  <DeleteHotelButton hotelId={hotel.id} token={session.backendToken} />
+                  <DeleteHotelButton hotelId={hotel.id} token={session.accessToken} />
                 </div>
               </div>
             </div>

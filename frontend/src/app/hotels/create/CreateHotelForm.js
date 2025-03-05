@@ -2,7 +2,7 @@
 "use client";
 import { useState } from "react";
 
-export default function CreateHotelForm({ backendToken }) {
+export default function CreateHotelForm({ accessToken }) {
   const [form, setForm] = useState({
     name: "",
     address: "",
@@ -35,7 +35,7 @@ export default function CreateHotelForm({ backendToken }) {
       const response = await fetch("http://localhost:8000/api/hotels", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${backendToken}`,
+          Authorization: `Bearer ${accessToken}`,
         },
         body: formData,
       });

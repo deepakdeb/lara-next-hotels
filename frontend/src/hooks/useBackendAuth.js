@@ -7,8 +7,10 @@ export function useBackendAuth() {
   const { data: session } = useSession();
 
   useEffect(() => {
-    if (session?.backendToken) {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${session.backendToken}`;
+    console.log("Session Data:", session); // Debugging
+    
+    if (session?.accessToken) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${session.accessToken}`;
     }
   }, [session]);
 
