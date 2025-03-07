@@ -1,7 +1,6 @@
-// app/your-route/HotelDetailsPage.js (Server Component)
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import HotelDetails from "./HotelDetails"; // Import the client component
+import HotelDetails from "./HotelDetails";
 
 async function getHotel(id, token) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/hotels/${id}`, {

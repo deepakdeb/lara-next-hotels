@@ -9,8 +9,6 @@ async function getHotels(page, token) {
     cache: "no-store",
   });
 
-  console.log(res)
-
   if (!res.ok) {
     throw new Error("Failed to fetch hotels");
   }
@@ -25,21 +23,32 @@ export default async function HotelsPage({ searchParams }) {
     return <p className="text-danger">You need to login to view this page.</p>;
   }
 
-  const page = await searchParams?.page || 1;
+  const page = searchParams?.page || 1;
   const hotels = await getHotels(page, session.accessToken);
 
   return (
-    <div>
-      <h1 className="mb-4">Manage Hotels</h1>
-      <div className="row">
-        {hotels.data.length === 0 ? (
-          <p>No hotels available.</p>
-        ) : (
-          hotels.data.map((hotel) => (
+    <div className="container mt-4">
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h1>Manage Hotels</h1>
+        <Link href="/hotels/create" className="btn btn-primary">
+          Create Hotel
+        </Link>
+      </div>
+
+      {hotels.data.length === 0 ? (
+        <div className="alert alert-info">No hotels available.</div>
+      ) : (
+        <div className="row">
+          {hotels.data.map((hotel) => (
             <div key={hotel.id} className="col-md-4 mb-4">
-              <div className="card">
+              <div className="card h-100">
                 <Link href={`/hotels/${hotel.id}`} className="text-decoration-none">
-                  <img src={hotel.image_url} className="card-img-top" alt={hotel.name} />
+                  <img
+                    src={hotel.image_url}
+                    className="card-img-top"
+                    alt={hotel.name}
+                    style={{ height: "200px", objectFit: "cover" }}
+                  />
                   <div className="card-body">
                     <h5 className="card-title">{hotel.name}</h5>
                     <p className="card-text">{hotel.address}</p>
@@ -47,32 +56,52 @@ export default async function HotelsPage({ searchParams }) {
                   </div>
                 </Link>
                 <div className="card-footer d-flex justify-content-between">
-                  <button className="btn btn-warning">
-                    <Link href={`/hotels/edit/${hotel.id}`} className="text-white text-decoration-none">Edit</Link>
-                  </button>
-                  {/* ✅ Use DeleteHotelButton (Client Component) */}
+                  <Link
+                    href={`/hotels/edit/${hotel.id}`}
+                    className="btn btn-warning text-white"
+                  >
+                    Edit
+                  </Link>
                   <DeleteHotelButton hotelId={hotel.id} token={session.accessToken} />
                 </div>
               </div>
             </div>
-          ))
-        )}
-      </div>
+          ))}
+        </div>
+      )}
 
       {/* Pagination */}
-      <div className="mt-4">
-        {hotels.prev_page_url && (
-          <a href={`?page=${hotels.current_page - 1}`} className="btn btn-secondary me-2">
-            Previous
-          </a>
-        )}
-        <span>Page {hotels.current_page} of {hotels.last_page}</span>
-        {hotels.next_page_url && (
-          <a href={`?page=${hotels.current_page + 1}`} className="btn btn-secondary ms-2">
-            Next
-          </a>
-        )}
-      </div>
+      <nav aria-label="Page navigation" className="mt-4">
+        <ul className="pagination justify-content-center">
+          {hotels.prev_page_url && (
+            <li className="page-item">
+              <Link
+                href={`?page=${hotels.current_page - 1}`}
+                className="page-link"
+                aria-label="Previous"
+              >
+                <span aria-hidden="true">&laquo; Previous</span>
+              </Link>
+            </li>
+          )}
+          <li className="page-item disabled">
+            <span className="page-link">
+              Page {hotels.current_page} of {hotels.last_page}
+            </span>
+          </li>
+          {hotels.next_page_url && (
+            <li className="page-item">
+              <Link
+                href={`?page=${hotels.current_page + 1}`}
+                className="page-link"
+                aria-label="Next"
+              >
+                <span aria-hidden="true">Next &raquo;</span>
+              </Link>
+            </li>
+          )}
+        </ul>
+      </nav>
     </div>
   );
 }

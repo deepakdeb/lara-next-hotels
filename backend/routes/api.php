@@ -18,6 +18,6 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/hotels', [HotelController::class, 'index']);
     Route::post('/hotels', [HotelController::class, 'store']);
     Route::post('/hotels/{id}', [HotelController::class, 'update']);
-    Route::get('/hotels/{id}', [HotelController::class, 'get']);
+    Route::get('/hotels/{id}', [HotelController::class, 'show']);
     Route::delete('/hotels/{id}', [HotelController::class, 'destroy']);
 });

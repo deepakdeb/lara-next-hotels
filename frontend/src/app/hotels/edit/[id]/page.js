@@ -1,4 +1,3 @@
-// app/your-route/EditHotelPage.js (Server Component)
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import EditHotel from "./EditHotel"; // Import the client component
@@ -8,7 +7,6 @@ export default async function EditHotelPage({ params }) {
   const session = await getServerSession(authOptions);
 
   if (!session?.accessToken) {
-    // Handle unauthenticated user
     return <p>You need to login to view this page.</p>;
   }
 

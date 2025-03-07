@@ -6,9 +6,7 @@ import axios from "axios";
 export function useBackendAuth() {
   const { data: session } = useSession();
 
-  useEffect(() => {
-    console.log("Session Data:", session); // Debugging
-    
+  useEffect(() => {    
     if (session?.accessToken) {
       axios.defaults.headers.common["Authorization"] = `Bearer ${session.accessToken}`;
     }
