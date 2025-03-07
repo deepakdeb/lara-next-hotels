@@ -58,7 +58,6 @@ export const authOptions = {
       }
 
       if (account?.provider === "google") {
-        console.log('google')
         try {
           const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/google`, {
             method: "POST",

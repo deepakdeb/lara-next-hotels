@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Link from "next/link";
-import DeleteHotelButton from "@/components/DeleteHotelButton"; // Import Delete Button Component
+import DeleteHotelButton from "@/components/DeleteHotelButton";
 
 async function getHotels(page, token) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/hotels?page=${page}`, {
@@ -24,7 +24,20 @@ export default async function HotelsPage({ searchParams }) {
   }
 
   const page = searchParams?.page || 1;
-  const hotels = await getHotels(page, session.accessToken);
+  let hotels;
+
+  try {
+    hotels = await getHotels(page, session.accessToken);
+  } catch (error) {
+    console.error("Error fetching hotels:", error);
+    return (
+      <div className="container mt-4">
+        <div className="alert alert-danger">
+          Failed to load hotels. Please try again later.
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container mt-4">

@@ -10,7 +10,7 @@ Route::post('/auth/google', [AuthController::class, 'googleAuth']);
 
 
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/refresh', [AuthController::class, 'refresh']);
 Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']);
 
